@@ -1,0 +1,22 @@
+os: nec-ipasolink
+text: 'NEC iPasoLink'
+type: radio
+icon: nec
+mib_dir: nec
+group: microwave
+
+# iPasoLink firmware often omits ifDescr, ifType, ifAlias, ifOperStatus.
+# empty_ifdescr: true  → accept ports even when ifDescr is empty
+# ifName: true         → use ifName as the port label fallback
+empty_ifdescr: true
+ports:
+    ifName: true
+
+over:
+    - { graph: device_bits, text: 'Device Traffic' }
+    - { graph: device_nec_ipasolink_rsl, text: 'RSL Min/Max' }
+    - { graph: device_nec_ipasolink_rmon, text: 'RMON Ethernet Statistics' }
+discovery:
+    -
+        sysObjectID:
+            - .1.3.6.1.4.1.119.2.3.69.502

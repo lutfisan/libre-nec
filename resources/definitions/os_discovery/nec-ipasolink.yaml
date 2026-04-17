@@ -1,0 +1,175 @@
+mib: IPE-SYSTEM-MIB:IPE-COMMON-MIB:IPE-COMMON1000-MIB
+modules:
+    os:
+        hardware:
+            - IPE-COMMON-MIB::invChassisName.1
+            - IPE-COMMON-MIB::invChassisCodeNo.1
+        serial: IPE-COMMON-MIB::invChassisSerialNo.1
+        version:
+            - IPE-COMMON-MIB::invChassisFirmVersion.1
+            - IPE-SYSTEM-MIB::ipeSysInvSoftwareVersion.1
+        sysname: IPE-SYSTEM-MIB::ipeSysNeName.1
+    sensors:
+        temperature:
+            data:
+                -
+                    oid: meteringTable
+                    value: metSysTempODUValue
+                    num_oid: '.1.3.6.1.4.1.119.2.3.69.501.8.1.1.10.{{ $index }}'
+                    descr: 'ODU Temp (ifIndex {{ $index }})'
+                    index: 'metSysTempODUValue.{{ $index }}'
+                    group: ODU
+                    skip_values: 'invalid'
+
+                -
+                    oid: meteringTable
+                    value: metSysTempIDUValue
+                    num_oid: '.1.3.6.1.4.1.119.2.3.69.501.8.1.1.12.{{ $index }}'
+                    descr: 'IDU Temp (ifIndex {{ $index }})'
+                    index: 'metSysTempIDUValue.{{ $index }}'
+                    group: IDU
+                    skip_values: 'invalid'
+
+                -
+                    oid: ctrlGroupTable
+                    value: ctrlTemperature
+                    num_oid: '.1.3.6.1.4.1.119.2.3.69.501.3.3.1.1.13.{{ $index }}'
+                    descr: 'Main Card Temp (slot {{ $index }})'
+                    index: 'ctrlTemperature.{{ $index }}'
+                    group: Main
+                    divisor: 10
+                    skip_values:
+                        -
+                            oid: ctrlTemperature
+                            op: '=='
+                            value: -999
+
+        dbm:
+            data:
+                -
+                    oid: meteringTable
+                    value: metSysTxPowerValue
+                    num_oid: '.1.3.6.1.4.1.119.2.3.69.501.8.1.1.4.{{ $index }}'
+                    descr: 'TX Power (ifIndex {{ $index }})'
+                    index: 'metSysTxPowerValue.{{ $index }}'
+                    skip_values: 'invalid'
+
+                -
+                    oid: meteringTable
+                    value: metSysRxLevelValue
+                    num_oid: '.1.3.6.1.4.1.119.2.3.69.501.8.1.1.6.{{ $index }}'
+                    descr: 'RX Level (ifIndex {{ $index }})'
+                    index: 'metSysRxLevelValue.{{ $index }}'
+                    skip_values: 'invalid'
+
+        voltage:
+            data:
+                -
+                    oid: meteringTable
+                    value: metSysPSVoltageValue
+                    num_oid: '.1.3.6.1.4.1.119.2.3.69.501.8.1.1.8.{{ $index }}'
+                    descr: 'ODU PSU Voltage (ifIndex {{ $index }})'
+                    index: 'metSysPSVoltageValue.{{ $index }}'
+                    skip_values: 'invalid'
+
+        fanspeed:
+            data:
+                -
+                    oid: meteringFanTable
+                    value: meteringFanSpeed1
+                    num_oid: '.1.3.6.1.4.1.119.2.3.69.501.8.3.1.3.{{ $index }}'
+                    descr: 'Fan Speed 1 (slot {{ $index }})'
+                    index: 'meteringFanSpeed1.{{ $index }}'
+                    skip_values: 'invalid'
+
+                -
+                    oid: meteringFanTable
+                    value: meteringFanSpeed2
+                    num_oid: '.1.3.6.1.4.1.119.2.3.69.501.8.3.1.5.{{ $index }}'
+                    descr: 'Fan Speed 2 (slot {{ $index }})'
+                    index: 'meteringFanSpeed2.{{ $index }}'
+                    skip_values: 'invalid'
+
+                -
+                    oid: meteringFanTable
+                    value: meteringFanSpeed3
+                    num_oid: '.1.3.6.1.4.1.119.2.3.69.501.8.3.1.7.{{ $index }}'
+                    descr: 'Fan Speed 3 (slot {{ $index }})'
+                    index: 'meteringFanSpeed3.{{ $index }}'
+                    skip_values: 'invalid'
+
+        count:
+            data:
+                -
+                    oid: meteringTable
+                    value: metSysBitErrorRateValue
+                    num_oid: '.1.3.6.1.4.1.119.2.3.69.501.8.1.1.14.{{ $index }}'
+                    descr: 'BER (ifIndex {{ $index }})'
+                    index: 'metSysBitErrorRateValue.{{ $index }}'
+                    skip_values: 'invalid'
+
+        state:
+            data:
+                -
+                    oid: oduGroupTable
+                    value: oduTotalAlarm
+                    num_oid: '.1.3.6.1.4.1.119.2.3.69.501.3.1.1.1.13.{{ $index }}'
+                    descr: 'ODU Total Alarm (ifIndex {{ $index }})'
+                    index: 'oduTotalAlarm.{{ $index }}'
+                    group: ODU
+                    state_name: ipe_severity
+                    states:
+                        - { descr: 'indeterminate', graph: 1, value: 1, generic: 0 }
+                        - { descr: 'critical',      graph: 1, value: 2, generic: 2 }
+                        - { descr: 'major',         graph: 1, value: 3, generic: 2 }
+                        - { descr: 'minor',         graph: 1, value: 4, generic: 1 }
+                        - { descr: 'warning',       graph: 1, value: 5, generic: 1 }
+                        - { descr: 'cleared',       graph: 1, value: 6, generic: 0 }
+
+                -
+                    oid: modemGroupTable
+                    value: modemTotalAlarm
+                    num_oid: '.1.3.6.1.4.1.119.2.3.69.501.3.2.1.1.{{ $index }}'
+                    descr: 'Modem Total Alarm (ifIndex {{ $index }})'
+                    index: 'modemTotalAlarm.{{ $index }}'
+                    group: Modem
+                    state_name: ipe_severity
+                    states:
+                        - { descr: 'indeterminate', graph: 1, value: 1, generic: 0 }
+                        - { descr: 'critical',      graph: 1, value: 2, generic: 2 }
+                        - { descr: 'major',         graph: 1, value: 3, generic: 2 }
+                        - { descr: 'minor',         graph: 1, value: 4, generic: 1 }
+                        - { descr: 'warning',       graph: 1, value: 5, generic: 1 }
+                        - { descr: 'cleared',       graph: 1, value: 6, generic: 0 }
+
+                -
+                    oid: fanGroupTable
+                    value: fanAlarm
+                    num_oid: '.1.3.6.1.4.1.119.2.3.69.501.3.7.1.1.3.{{ $index }}'
+                    descr: 'Fan Alarm (slot {{ $index }})'
+                    index: 'fanAlarm.{{ $index }}'
+                    group: Fan
+                    state_name: ipe_severity
+                    states:
+                        - { descr: 'indeterminate', graph: 1, value: 1, generic: 0 }
+                        - { descr: 'critical',      graph: 1, value: 2, generic: 2 }
+                        - { descr: 'major',         graph: 1, value: 3, generic: 2 }
+                        - { descr: 'minor',         graph: 1, value: 4, generic: 1 }
+                        - { descr: 'warning',       graph: 1, value: 5, generic: 1 }
+                        - { descr: 'cleared',       graph: 1, value: 6, generic: 0 }
+
+                -
+                    oid: psGroupTable
+                    value: psPowerSupply
+                    num_oid: '.1.3.6.1.4.1.119.2.3.69.501.3.8.1.1.3.{{ $index }}'
+                    descr: 'PSU Alarm (slot {{ $index }})'
+                    index: 'psPowerSupply.{{ $index }}'
+                    group: PSU
+                    state_name: ipe_severity
+                    states:
+                        - { descr: 'indeterminate', graph: 1, value: 1, generic: 0 }
+                        - { descr: 'critical',      graph: 1, value: 2, generic: 2 }
+                        - { descr: 'major',         graph: 1, value: 3, generic: 2 }
+                        - { descr: 'minor',         graph: 1, value: 4, generic: 1 }
+                        - { descr: 'warning',       graph: 1, value: 5, generic: 1 }
+                        - { descr: 'cleared',       graph: 1, value: 6, generic: 0 }

@@ -1,0 +1,14 @@
+--- a/includes/discovery/ports.inc.php
++++ b/includes/discovery/ports.inc.php
+@@ -95,6 +95,11 @@
+ if ($device['os'] == 'nokia-1830') {
+     require base_path('includes/discovery/ports/nokia-1830.inc.php');
+ }
++
++// NEC iPasoLink - ensure ifDescr is set from ifName (FR-66)
++if ($device['os'] == 'nec-ipasolink') {
++    require base_path('includes/discovery/ports/nec-ipasolink.inc.php');
++}
+ 
+ // End Building SNMP Cache Array
+ d_echo($port_stats);
